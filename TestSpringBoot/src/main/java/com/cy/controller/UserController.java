@@ -37,7 +37,7 @@ public class UserController {
     }
 
     @RequestMapping("login")
-    @ResponseBody
+
     public Object login(@RequestBody User user) {
         if (us.loginUser(user.getUsername(), user.getPassword()).size() > 0) {
             return "success";
@@ -48,7 +48,7 @@ public class UserController {
 
 
     @RequestMapping("register")
-    @ResponseBody
+
     public Object register(@RequestBody User user) {
         if (us.registerUser(user.getUsername(), user.getPassword()) != null) {
             return "success";
