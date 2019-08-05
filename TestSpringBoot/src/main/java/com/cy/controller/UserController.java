@@ -18,6 +18,7 @@ import java.util.Map;
 
 public class UserController {
     //使用SpringIOC控制反转，让spring容器创建对象
+    //userservice上添加@Service注解
     @Resource
     UserService us;
 
