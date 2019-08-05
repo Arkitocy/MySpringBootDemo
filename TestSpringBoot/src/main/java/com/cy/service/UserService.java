@@ -4,6 +4,7 @@ package com.cy.service;
 import com.cy.comment.Connecter;
 import com.cy.comment.KeyUtils;
 import com.cy.entity.User;
+import org.springframework.stereotype.Service;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -11,6 +12,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+
+@Service
 public class UserService {
     Connection cn = null;
 
@@ -45,7 +48,7 @@ public class UserService {
     }
 
     public ArrayList<User> loginUser(String name, String pwd) {
-        ArrayList<User> arrayList =new ArrayList<>();
+        ArrayList<User> arrayList = new ArrayList<>();
         try {
             cn = new Connecter().getConnetcion();
             String sql = "select * from tb_user where username= ? and password=?;";
