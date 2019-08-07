@@ -1,6 +1,5 @@
 $(document).ready(function () {
     $.getJSON("product/showall", function (json) {
-            console.log("1");
             console.log(json);
             $("#tbodymainbtn").empty();
             for (var i = 0; i < json.length; i++) {

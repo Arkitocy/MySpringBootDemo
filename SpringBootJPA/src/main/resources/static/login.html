@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>登陆</title>
+    <link rel="stylesheet" href="css/auth.css">
+    <script src="https://cdn.staticfile.org/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://cdn.staticfile.org/popper.js/1.12.5/umd/popper.min.js"></script>
+    <script src="https://cdn.staticfile.org/twitter-bootstrap/4.1.0/js/bootstrap.min.js"></script>
+    <script src="js/login.js"></script>
+</head>
+
+<body>
+    <div class="lowin lowin-blue">
+        <div class="lowin-brand">
+            <!--<img src="static/kodinger.jpg" alt="logo">-->
+        </div>
+        <div class="lowin-wrapper">
+            <div class="lowin-box lowin-login">
+                <div class="lowin-box-inner">
+                    <form>
+                        <p>Sign in to continue</p>
+                        <div class="lowin-group">
+                            <label>用户名 <a href="#" class="login-back-link">Sign in?</a></label>
+                            <input type="text" class="lowin-input" id="name" name="username" >
+                            <p style="color:red;display: none" id="namep">用户名过长</p>
+                            <p style="color:red;display: none" id="namepp" >名字不为空</p>
+                        </div>
+                        <div class="lowin-group password-group">
+                            <label>密码 </label>
+                            <input type="password" class="lowin-input" id="pwd" name="userpwd" >
+                            <p style="color:red;display: none" id="pwdp" >密码不为空</p>
+                        </div>
+                        <br>
+                        <button type="button" class="lowin-btn login-btn" id="btn" name="btn">
+                            登陆
+                        </button>
+                        <div class="text-foot">
+                            没有账号？ <a href="register.html" class="register-link">注册</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+<script src="js/auth.js"></script>
+<script>
+    Auth.init({
+        login_url: '#login',
+        forgot_url: '#forgot'
+    });
+</script>
+
+</body>
+</html>
