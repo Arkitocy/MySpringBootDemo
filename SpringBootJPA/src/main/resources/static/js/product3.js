@@ -1,4 +1,9 @@
 $(document).ready(function () {
+    $.post("product/showId",function (data) {
+        var loginname=data.username;
+        $("#username").text(loginname);
+    },"json");
+
     $("button[name='btnn']").click(function () {
         var adata = {
             "name": $("#productname").val(),

@@ -1,4 +1,8 @@
 $(document).ready(function () {
+    $.post("product/showId",function (data) {
+        var loginname=data.username;
+        $("#username").text(loginname);
+    },"json");
 
 
     function SimpleDateFormat(pattern) {
