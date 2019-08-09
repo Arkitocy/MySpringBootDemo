@@ -22,7 +22,7 @@ public class UserService {
         return ur.findByUsername(name);
     }
 
-    public List<User> findByNameAndPassword(String name,String password){
+    public User findByNameAndPassword(String name,String password){
         return ur.findByUsernameAndPassword(name,password);
     }
 

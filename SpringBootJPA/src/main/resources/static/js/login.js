@@ -31,28 +31,35 @@ $(function () {
 
     $("button[name='btn']").click(function () {
 
-        var adata = {
-            "username": $("#name").val(),
-            "password": $("#pwd").val()
-        }
-        var data = JSON.stringify(adata);
-        $.ajax({
-            type: "POST",
-            contentType: "application/json",
-            data: data,
-            url: "login",
-            success: function (res) {
-                if (res != "" && res == "success") {
-                    window.location.href = "index.html";
-                } else {
-                    alert("登陆失败");
+            var adata = {
+                "username": $("#name").val(),
+                "password": $("#pwd").val()
+            }
+            var data = JSON.stringify(adata);
+            $.ajax({
+                type: "POST",
+                contentType: "application/json",
+                data: data,
+                url: "login",
+                success: function (res) {
+                    var username = res;
+
+                    console.log(username);
+                    if (res != "" ) {
+                        alert("登陆成功");
+                        $.getJSON("product/setId",{"username":username},function (data) {
+                            window.location.href = "index.html";
+                        },"json");
+
+                    } else {
+                        alert("登陆失败");
+                        window.location.href = "login.html";
+                    }
+                },
+                error: function () {
                     window.location.href = "login.html";
                 }
-            },
-            error: function () {
-                window.location.href = "login.html";
-            }
-        });
-    })
+            });
+        })
 
 })

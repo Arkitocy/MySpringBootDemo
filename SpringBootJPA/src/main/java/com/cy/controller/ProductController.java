@@ -10,7 +10,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @RestController
@@ -20,18 +23,18 @@ public class ProductController {
     ProductService ps;
 
     @RequestMapping("showall")
-    public Iterable<Product> findall(){
+    public Iterable<Product> findall() {
         Iterable<Product> ip = ps.findall();
         return ip;
     }
 
     @RequestMapping("showByName")
-    public List<Product> findByName(HttpServletRequest request){
+    public List<Product> findByName(HttpServletRequest request) {
         return ps.findByName(request.getParameter("productname"));
     }
 
     @RequestMapping("findById")
-    public Optional<Product> findById(HttpServletRequest request){
+    public Optional<Product> findById(HttpServletRequest request) {
         System.out.println(request.getParameter("id"));
         return ps.findById(request.getParameter("id"));
     }
@@ -46,17 +49,36 @@ public class ProductController {
     }
 
     @RequestMapping("deleteById")
-    public void deleteById(HttpServletRequest request){
+    public void deleteById(HttpServletRequest request) {
         ps.deleteById(request.getParameter("id"));
     }
 
     @RequestMapping("save")
-    private Object save(@RequestBody Product product){
+    private Object save(@RequestBody Product product) {
         product.setId(KeyUtils.genUniqueKey());
         if (ps.save(product) != null) {
             return "success";
         } else {
             return "fail";
         }
+    }
+
+    @RequestMapping("showId")
+    public Map showId(HttpServletRequest request) {
+        Map map = new HashMap();
+        HttpSession session = request.getSession();
+        String name = (String)session.getAttribute("username");
+        map.put("username",name);
+        return map;
+    }
+
+    @RequestMapping("setId")
+    public Map setId(HttpServletRequest request){
+        Map map = new HashMap();
+        map.put("rs","y");
+        String name = request.getParameter("username");
+        HttpSession session = request.getSession();
+        session.setAttribute("username",name);
+        return map;
     }
 }

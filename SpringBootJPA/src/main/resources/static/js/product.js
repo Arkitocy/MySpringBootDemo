@@ -1,4 +1,9 @@
 $(document).ready(function () {
+    $.post("product/showId",function (data) {
+        var loginname=data.username;
+        $("#username").text(loginname);
+    },"json");
+
     $.getJSON("product/showall", function (json) {
             console.log(json);
             $("#tbodymainbtn").empty();
