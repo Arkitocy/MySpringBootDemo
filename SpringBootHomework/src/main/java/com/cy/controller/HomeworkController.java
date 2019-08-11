@@ -16,7 +16,9 @@ import java.sql.Date;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("homework")
@@ -76,14 +78,16 @@ public class HomeworkController {
     }
 
     @RequestMapping("deleteById")
-    public Object deleteById(HttpServletRequest request) {
+    public Map deleteById(HttpServletRequest request) {
+        Map map=new HashMap();
         String id = request.getParameter("id");
         hs.deleteById(id);
         if (hs.findAllById(id).size() == 0) {
-            System.out.println("success");
-            return "success";
+            map.put("rs","success");
+        }else {
+            map.put("rs","fail");
         }
-        return "fail";
+        return map;
     }
 
     @RequestMapping("showdetails/{id}")
