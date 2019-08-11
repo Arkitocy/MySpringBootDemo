@@ -49,7 +49,6 @@ public class HomeworkService {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         SimpleDateFormat sdf2 = new SimpleDateFormat("yyyy-MM-dd");
         List<Map<String, Object>> listmap = dd.queryHomeworkUserDTOListMap(homework);
-        System.out.println(listmap);
         for (int i = 0; i < listmap.size(); i++) {
             HomeworkUserDTO hud = new HomeworkUserDTO();
             String id = (String) listmap.get(i).get("id");
@@ -60,7 +59,6 @@ public class HomeworkService {
                     Date completeTime = new Date(sdf.parse( listmap.get(i).get("complete_time").toString()).getTime());
                     hud.setCompleteTime(completeTime);
                 }else {
-
                     Date completeTime=null;
                     hud.setCompleteTime(completeTime);
                 }
