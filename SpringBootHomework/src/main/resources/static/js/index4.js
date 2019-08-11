@@ -3,16 +3,16 @@ $(document).ready(function () {
     var logintype;
     var loginid;
     $.post("showId", function (data) {
-         loginname = data.username;
-         logintype = data.type;
-         loginid = data.id;
-        if(loginname==null){
+        loginname = data.username;
+        logintype = data.type;
+        loginid = data.id;
+        if (loginname == null) {
             window.location.href = "login.html";
         }
-        if(logintype=="student"){
-            $("#index3").css("display","none");
-            $("button[name='changebtn']").attr("style","display:none;");
-            $("button[name='deletebtn']").attr("style","display:none;");
+        if (logintype == "student") {
+            $("#index3").css("display", "none");
+            $("button[name='changebtn']").attr("style", "display:none;");
+            $("button[name='deletebtn']").attr("style", "display:none;");
         }
         $("#username").text(loginname);
     }, "json");
@@ -94,9 +94,9 @@ $(document).ready(function () {
                     + "</tr>"
                 );
             }
-            if(logintype=="student"){
-                $("button[name='changebtn']").attr("style","display:none;");
-                $("button[name='deletebtn']").attr("style","display:none;");
+            if (logintype == "student") {
+                $("button[name='changebtn']").attr("style", "display:none;");
+                $("button[name='deletebtn']").attr("style", "display:none;");
             }
             $("button[name='changebtn']").click(function () {
                 var id = this.id
@@ -146,11 +146,32 @@ $(document).ready(function () {
             $("button[name='deletebtn']").click(function () {
                 $.getJSON("homework/deleteById", {id: this.id}, function (rs) {
                 });
-                window.location.href="index4.html";
+                window.location.href = "index4.html";
             })
 
             $("button[name='checkbtn']").click(function () {
+                var fmt = SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                $.getJSON("homework/showdetails/"+this.id, {"id": this.id}, function (json) {
+                    $("#dtbodybtn").empty();
+                    for (var i = 0; i < json.length; i++) {
+                        $("#dtbodybtn").append(
+                            "<tr id='tridval" + i + "'>"
+                            + "<td>" + json[i].id
+                            + "</td>"
+                            + "<td>" + json[i].username
+                            + "</td>"
+                            + "<td>" + fmt.format(json[i].completeTime)
+                            + "</td>"
+                            + "<td>" + json[i].status
+                            + "</td>"
+                            + "</tr>"
+                        )
+                    }
+
+                })
                 $('#modalhwdetail2').modal("show");
+
+
             })
 
         })

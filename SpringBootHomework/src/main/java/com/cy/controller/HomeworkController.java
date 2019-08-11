@@ -1,17 +1,21 @@
 package com.cy.controller;
 
 import com.cy.entity.Homework;
+import com.cy.entity.HomeworkUserDTO;
 import com.cy.service.HomeworkService;
 import com.cy.utils.KeyUtils;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import java.sql.Array;
 import java.sql.Date;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -19,6 +23,7 @@ import java.util.List;
 public class HomeworkController {
     @Resource
     HomeworkService hs;
+
 
     SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 
@@ -74,11 +79,16 @@ public class HomeworkController {
     public Object deleteById(HttpServletRequest request) {
         String id = request.getParameter("id");
         hs.deleteById(id);
-        if (hs.findAllById(id).size()==0) {
+        if (hs.findAllById(id).size() == 0) {
             System.out.println("success");
             return "success";
         }
         return "fail";
+    }
+
+    @RequestMapping("showdetails/{id}")
+    public ArrayList<HomeworkUserDTO> showdetails(@PathVariable("id") String hid) {
+        return hs.gethomeworkdetail(hs.findAllById(hid).get(0));
     }
 
 }
