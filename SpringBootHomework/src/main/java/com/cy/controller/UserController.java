@@ -49,15 +49,15 @@ public class UserController {
     }
 
     @RequestMapping("login")
-    public Object login(@RequestBody User user) {
+    public User login(@RequestBody User user) {
         String loginName = user.getUsername();
         String password = user.getPassword();
         String type = user.getType();
         User user1 = us.findByNameAndPassword(loginName, password,type   );
         if (user1 != null) {
-            return user1.getUsername();
+            return user1;
         } else {
-            return "fail";
+            return null;
         }
     }
 
@@ -66,7 +66,11 @@ public class UserController {
         Map map = new HashMap();
         HttpSession session = request.getSession();
         String name = (String)session.getAttribute("username");
+        String id = (String)session.getAttribute("id");
+        String type = (String)session.getAttribute("type");
         map.put("username",name);
+        map.put("id",id);
+        map.put("type",type);
         return map;
     }
 
@@ -75,8 +79,12 @@ public class UserController {
         Map map = new HashMap();
         map.put("rs","y");
         String name = request.getParameter("username");
+        String id = request.getParameter("id");
+        String type = request.getParameter("type");
         HttpSession session = request.getSession();
         session.setAttribute("username",name);
+        session.setAttribute("id",id);
+        session.setAttribute("type",type);
         return map;
     }
 

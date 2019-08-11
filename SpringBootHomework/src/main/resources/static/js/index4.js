@@ -1,8 +1,13 @@
 $(document).ready(function () {
     $.post("showId", function (data) {
         var loginname = data.username;
+        var logintype = data.type;
+        var loginid = data.id;
         if(loginname==null){
             window.location.href = "login.html";
+        }
+        if(logintype=="student"){
+            $("#index3").css("display","none");
         }
         $("#username").text(loginname);
     }, "json");
@@ -86,13 +91,10 @@ $(document).ready(function () {
             }
 
             $("button[name='changebtn']").click(function () {
-                console.log(this.id);
                 var id = this.id
                 var fmt = SimpleDateFormat("yyyy-MM-dd");
                 $.getJSON("homework/findAllById", {id: id}, function (js) {
                     $("#changebtn").empty();
-                    console.log(js);
-                    console.log(js[0].details);
                     $("#id").attr("value", js[0].id);
                     $("#hwtitle").attr("value", js[0].title);
                     $("#hwtype").attr("value", js[0].type);
@@ -116,7 +118,6 @@ $(document).ready(function () {
                             data: data,
                             url: "homework/update",
                             success: function (res) {
-                                console.log(res);
                                 if (res != "") {
                                     alert("修改成功");
                                     window.location.href = "index4.html";
@@ -136,7 +137,6 @@ $(document).ready(function () {
 
             $("button[name='deletebtn']").click(function () {
                 $.getJSON("homework/deleteById", {id: this.id}, function (rs) {
-                    console.log(rs);
                     alert(rs);
                     if ("success" == rs) {
                         window.location.href = "index4.html";

@@ -1,14 +1,18 @@
 $(document).ready(function () {
     $.post("showId", function (data) {
         var loginname = data.username;
+        var logintype = data.type;
+        var loginid = data.id;
         if(loginname==null){
             window.location.href = "login.html";
+        }
+        if(logintype=="student"){
+            $("#index3").css("display","none");
         }
         $("#username").text(loginname);
     }, "json");
 
     $.post("homework/showByType", {"type": "结对"}, function (json) {
-        console.log(json);
         $("#hw").empty();
         for (var i = 0; i < json.length; i++) {
             $("#hw").append(

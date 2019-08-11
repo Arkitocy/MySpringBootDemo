@@ -1,8 +1,13 @@
 $(document).ready(function () {
     $.post("showId", function (data) {
         var loginname = data.username;
+        var logintype = data.type;
+        var loginid = data.id;
         if(loginname==null){
             window.location.href = "login.html";
+        }
+        if(logintype=="student"){
+            window.location.href="index.html";
         }
         $("#username").text(loginname);
     }, "json");
@@ -15,14 +20,12 @@ $(document).ready(function () {
             "details": $("#details").val()
         }
         var data = JSON.stringify(adata);
-        console.log(data);
         $.ajax({
             type: "POST",
             contentType: "application/json",
             data: data,
             url: "homework/save",
             success: function (res) {
-                console.log(res);
                 if (res != "" ) {
                     alert("添加成功");
                     window.location.href = "index3.html";
