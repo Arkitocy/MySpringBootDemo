@@ -6,6 +6,7 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
+        <module name="SpringBootHomework" />
         <module name="SpringBootJPA" />
         <module name="TestSpringBoot" />
       </profile>
@@ -13,6 +14,7 @@
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="SpringBootHomework" options="-parameters" />
       <module name="SpringBootJPA" options="-parameters" />
       <module name="TestSpringBoot" options="-parameters" />
     </option>

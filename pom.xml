@@ -11,6 +11,7 @@
     <modules>
         <module>TestSpringBoot</module>
         <module>SpringBootJPA</module>
+        <module>SpringBootHomework</module>
     </modules>
 
     <parent>
