@@ -1,13 +1,18 @@
 $(document).ready(function () {
+    var loginname;
+    var logintype;
+    var loginid;
     $.post("showId", function (data) {
-        var loginname = data.username;
-        var logintype = data.type;
-        var loginid = data.id;
+         loginname = data.username;
+         logintype = data.type;
+         loginid = data.id;
         if(loginname==null){
             window.location.href = "login.html";
         }
         if(logintype=="student"){
             $("#index3").css("display","none");
+            $("button[name='changebtn']").attr("style","display:none;");
+            $("button[name='deletebtn']").attr("style","display:none;");
         }
         $("#username").text(loginname);
     }, "json");
@@ -89,7 +94,10 @@ $(document).ready(function () {
                     + "</tr>"
                 );
             }
-
+            if(logintype=="student"){
+                $("button[name='changebtn']").attr("style","display:none;");
+                $("button[name='deletebtn']").attr("style","display:none;");
+            }
             $("button[name='changebtn']").click(function () {
                 var id = this.id
                 var fmt = SimpleDateFormat("yyyy-MM-dd");
@@ -106,7 +114,7 @@ $(document).ready(function () {
                         var adata = {
                             "id": $("#id").val(),
                             "title": $("#hwtitle").val(),
-                            "typpe": $("#hwtype").val(),
+                            "type": $("#hwtype").val(),
                             "updateTime": $("#hwupdateTime").val(),
                             "finishTime": $("#hwfinishTime").val(),
                             "details": $("#hwdetails").val()
@@ -137,14 +145,8 @@ $(document).ready(function () {
 
             $("button[name='deletebtn']").click(function () {
                 $.getJSON("homework/deleteById", {id: this.id}, function (rs) {
-                    alert(rs);
-                    if ("success" == rs) {
-                        window.location.href = "index4.html";
-                    } else {
-                        alert("删除失败");
-                    }
                 });
-                window.location.href = "index4.html";
+                window.location.href="index4.html";
             })
 
             $("button[name='checkbtn']").click(function () {
