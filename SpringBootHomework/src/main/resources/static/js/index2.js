@@ -15,7 +15,7 @@ $(document).ready(function () {
         $("#username").text(loginname);
     }, "json");
 
-    $.post("homework/showByType", {"type": "结对"}, function (json) {
+    $.post("homework/showByType/结对", {"type": "结对"}, function (json) {
         $("#hw").empty();
         for (var i = 0; i < json.length; i++) {
             $("#hw").append(

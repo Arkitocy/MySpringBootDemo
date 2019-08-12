@@ -1,24 +1,27 @@
 package com.cy.controller;
 
 import com.cy.entity.Homework;
+import com.cy.entity.HomeworkRankDTO;
 import com.cy.entity.HomeworkUserDTO;
+import com.cy.repository.DTODao;
 import com.cy.service.HomeworkService;
 import com.cy.utils.KeyUtils;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.apache.commons.fileupload.FileItem;
+import org.apache.commons.fileupload.disk.DiskFileItemFactory;
+import org.apache.commons.fileupload.servlet.ServletFileUpload;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+import java.io.*;
 import java.sql.Array;
 import java.sql.Date;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+
 
 @RestController
 @RequestMapping("homework")
@@ -26,12 +29,14 @@ public class HomeworkController {
     @Resource
     HomeworkService hs;
 
+    @Resource
+    DTODao dd;
 
     SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 
-    @RequestMapping("showByType")
-    public List<Homework> showByType(HttpServletRequest request) {
-        String type = request.getParameter("type");
+    @RequestMapping("showByType/{type}")
+    public List<Homework> showByType(@PathVariable("type") String type) {
+
         java.util.Date d1 = new java.util.Date();
         if (d1.getHours() <= 11 && "竞赛".equals(type)) {
             Date datesql = new Date(d1.getTime());
@@ -65,9 +70,8 @@ public class HomeworkController {
         return hs.save(homework);
     }
 
-    @RequestMapping("findAllById")
-    public List<Homework> findAllById(HttpServletRequest request) {
-        String id = request.getParameter("id");
+    @RequestMapping("findAllById/{id}")
+    public List<Homework> findAllById(@PathVariable("id") String id) {
         return hs.findAllById(id);
 
     }
@@ -77,10 +81,9 @@ public class HomeworkController {
         return hs.update(homework);
     }
 
-    @RequestMapping("deleteById")
-    public Map deleteById(HttpServletRequest request) {
+    @RequestMapping("deleteById/{id}")
+    public Map deleteById(@PathVariable("id") String id) {
         Map map=new HashMap();
-        String id = request.getParameter("id");
         hs.deleteById(id);
         if (hs.findAllById(id).size() == 0) {
             map.put("rs","success");
@@ -95,4 +98,20 @@ public class HomeworkController {
         return hs.gethomeworkdetail(hs.findAllById(hid).get(0));
     }
 
+
+    @RequestMapping("upload")
+    public Map  upload()  {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        Map map=new HashMap();
+
+//        dd.queryuploadDTOListMap(hid,uid,new java.util.Date());
+
+        map.put("rs","success");
+        return map;
+    }
+
+    @RequestMapping("rank/{type}")
+    public ArrayList<HomeworkRankDTO> rank(@PathVariable("type") String type) {
+        return hs.getRank(type);
+    }
 }

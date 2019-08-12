@@ -16,7 +16,7 @@ $(document).ready(function () {
         $("#username").text(loginname);
     }, "json");
 
-    $.post("homework/showByType", {"type": "竞赛"}, function (json) {
+    $.post("homework/showByType/竞赛", {"type": "竞赛"}, function (json) {
         $("#hw").empty();
         for (var i = 0; i < json.length; i++) {
             $("#hw").append(

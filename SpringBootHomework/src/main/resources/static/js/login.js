@@ -43,15 +43,12 @@ $(function () {
             data: data,
             url: "login",
             success: function (res) {
-                var username = res.username;
-                if (username != "") {
-                    alert("登陆成功");
-                    $.getJSON("setId", {"id": res.id, "username": username,"type":res.type}, function (data) {
+                if (res != null) {
+                    $.getJSON("setId", {"id": res.id, "username": res.username,"type":res.type}, function (data) {
                         window.location.href = "index.html";
                     }, "json");
 
                 } else {
-                    alert("登陆失败");
                     window.location.href = "login.html";
                 }
             },

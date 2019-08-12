@@ -91,6 +91,7 @@ $(document).ready(function () {
                     + "<td><button type='button' class='btn btn-primary' name='changebtn' id='" + json[i].id + "'>编辑</button></td>"
                     + "<td><button type='button' class='btn btn-primary' name='checkbtn' id='" + json[i].id + "'>查看</button></td>"
                     + "<td><button type='button' class='btn btn-primary' name='deletebtn' id='" + json[i].id + "'>删除</button></td>"
+                    + "<td><button type='button' class='btn btn-primary' name='uploadbtn' id='" + json[i].id + "'>上传</button></td>"
                     + "</tr>"
                 );
             }
@@ -101,7 +102,7 @@ $(document).ready(function () {
             $("button[name='changebtn']").click(function () {
                 var id = this.id
                 var fmt = SimpleDateFormat("yyyy-MM-dd");
-                $.getJSON("homework/findAllById", {id: id}, function (js) {
+                $.getJSON("homework/findAllById/"+id, {id: id}, function (js) {
                     $("#changebtn").empty();
                     $("#id").attr("value", js[0].id);
                     $("#hwtitle").attr("value", js[0].title);
@@ -144,14 +145,21 @@ $(document).ready(function () {
             })
 
             $("button[name='deletebtn']").click(function () {
-                $.getJSON("homework/deleteById", {id: this.id}, function (rs) {
+                var id= this.id;
+                console.log(id);
+                $.getJSON("homework/deleteById/"+id, {id: id}, function (rs) {
+                    if (rs.rs == 'success') {
+                        window.location.href = "index4.html";
+                    } else {
+                        alert("删除失败");
+                        window.location.href = "index4.html";
+                    }
                 });
-                window.location.href = "index4.html";
             })
 
             $("button[name='checkbtn']").click(function () {
                 var fmt = SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-                $.getJSON("homework/showdetails/"+this.id, {"id": this.id}, function (json) {
+                $.getJSON("homework/showdetails/" + this.id, {"id": this.id}, function (json) {
                     $("#dtbodybtn").empty();
                     for (var i = 0; i < json.length; i++) {
                         $("#dtbodybtn").append(
@@ -174,6 +182,33 @@ $(document).ready(function () {
 
             })
 
+            $("button[name='uploadbtn']").click(function () {
+                var hid = this.id;
+                var uid = loginid;
+                $('#uploadmodal').modal("show");
+                $("button[name='uploadbtn2']").click(function () {
+                    var file=$("#myFile")[0].files[0];
+                    // formData.append("file",file);
+                    // formData.append("uid",uid);
+                    // formData.append("hid",hid);
+                    var formData = new FormData(document.getElementById("upload-form"));
+                    $.ajax({
+                        url:'homework/upload',
+                        dataType:'json',
+                        type:'POST',
+                        async: false,
+                        data: formData,
+                        processData : false, // 使数据不做处理
+                        contentType : false, // 不要设置Content-Type请求头
+                        success: function (resp) {
+                            if(resp.result==1){
+                                $('#uploadmodal').modal('hide');
+                            }else{
+                            }
+                        }
+                    });
+                })
+            })
         })
     })
 

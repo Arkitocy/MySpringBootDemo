@@ -6,6 +6,7 @@ import org.springframework.stereotype.Repository;
 
 import javax.annotation.Resource;
 import java.sql.Types;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -20,5 +21,26 @@ public class DTODao {
         int[] argTypes = {Types.VARCHAR};
 
         return this.jdbcTemplate.queryForList(sql, args, argTypes);
+    }
+
+
+    public int queryuploadDTOListMap(String  uid, String hid, Date date) {
+        String sql = "insert into user_homework values(?,?,?,?)";
+        Object[] args = {hid,uid,date,"完成"};
+        int[] argTypes = {Types.VARCHAR,Types.VARCHAR,Types.DATE,Types.VARCHAR};
+
+        return this.jdbcTemplate.update(sql,args);
+    }
+
+    public List<Map<String, Object>> queryRankDTOListMap(String type) {
+        if("全部".equals(type)){
+            String sql="SELECT `user`.`username`,COUNT(user_homework.`status`) ac, `user`.type FROM `user` LEFT JOIN user_homework ON `user`.id=user_homework.u_id GROUP BY `user`.id HAVING `user`.type='student' ORDER BY COUNT(user_homework.`status`) DESC";
+            return this.jdbcTemplate.queryForList(sql);
+        }else {
+            String sql2 ="SELECT `user`.`username`,count(t.h_id) ac ,`user`.type FROM `user` LEFT JOIN (SELECT `user`.id,`user`.`username`,user_homework.h_id FROM `user` LEFT JOIN user_homework on `user`.id = user_homework.u_id LEFT JOIN homework on user_homework.h_id=homework.id where homework.type=?) t on t.id = `user`.id GROUP BY `user`.id HAVING `user`.type='student' ORDER BY COUNT(t.h_id) desc;";
+            Object[] args = {type};
+            int[] argTypes = {Types.VARCHAR};
+            return this.jdbcTemplate.queryForList(sql2, args, argTypes);
+        }
     }
 }

@@ -119,11 +119,15 @@
                     </li>
                     <li>
                         <a href="index3.html" class="waves-effect" id="index3"><i class="fa fa-clock-o m-r-10"
-                                                                      aria-hidden="true"></i>布置作业</a>
+                                                                                  aria-hidden="true"></i>布置作业</a>
                     </li>
                     <li>
                         <a href="index4.html" class="waves-effect"><i class="fa fa-clock-o m-r-10"
                                                                       aria-hidden="true"></i>查看作业</a>
+                    </li>
+                    <li>
+                        <a href="index5.html" class="waves-effect"><i class="fa fa-clock-o m-r-10"
+                                                                      aria-hidden="true"></i>作业排名</a>
                     </li>
                 </ul>
             </nav>
@@ -275,6 +279,38 @@
                 </div>
             </div>
         </div>
+        <div class="modal fade" id="uploadmodal">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+
+                    <!-- 模态框头部 -->
+                    <div class="modal-header">
+                        <h4 class="modal-title">提交作业</h4>
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+
+                    <!-- 模态框主体 -->
+                    <div class="modal-body">
+                        <form id="upload-form" method="post" enctype="multipart/form-data">
+                            <input type="file" id="myFile" name="filename2">
+                            <input type="hidden" id="userid" name="uid">
+                            <input type="hidden" id="homeworkid" name="hid">
+                            <div class="mt-3">
+                                <button type="button" class="btn btn-primary" id="uploadbtn2" name="uploadbtn2">上传作业
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+
+                    <!-- 模态框底部 -->
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">关闭</button>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
     </div>
 </div>
 <!-- ============================================================== -->

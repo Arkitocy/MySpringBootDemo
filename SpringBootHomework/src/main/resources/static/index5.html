@@ -11,7 +11,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
     <!-- Favicon icon -->
-    <script src="js/index1.js"></script>
+    <script src="js/index5.js"></script>
     <link rel="icon" type="image/png" sizes="16x16" href="assets/images/favicon.png">
     <title>Home</title>
     <!-- Bootstrap Core CSS -->
@@ -153,21 +153,47 @@
             <!-- ============================================================== -->
             <div class="row page-titles">
                 <div class="col-md-6 col-8 align-self-center">
-                    <h3 class="text-themecolor m-b-0 m-t-0">今日竞赛</h3>
+                    <h3 class="text-themecolor m-b-0 m-t-0">排行榜</h3>
                     <ol class="breadcrumb">
                         <li class="breadcrumb-item"><a href="javascript:void(0)">Home</a></li>
-                        <li class="breadcrumb-item active">今日竞赛</li>
+                        <li class="breadcrumb-item active">排行榜</li>
                     </ol>
                 </div>
             </div>
-            <h1 class="bd-lead">竞赛是每个人单独完成作业</h1>
+
+
             <main class="col-12 col-md-9 col-xl-8 py-md-3 pl-md-5 bd-content" role="main">
-                <main class="col-12 col-md-9 col-xl-8 py-md-3 pl-md-5 bd-content" role="main">
-                    <div id="hw">
+                <form class="form-inline" action="RankServlet">
+                    &nbsp&nbsp<label form="pwd">作业类型:</label>
+                    <select class="form-control" name="type" id="type">
+                        <option value="全部">全部</option>
+                        <option value='竞赛'>竞赛</option>
+                        <option value='结对'>结对</option>
+                    </select>
+                    &nbsp&nbsp
+                    <button type="button" class="btn btn-primary" id="btn1">查询</button>
+                </form>
+                <div class="container">
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead>
+                            <tr>
+                                <th>排名</th>
+                                <th>名字</th>
+                                <th>完成次数</th>
+
+                            </tr>
+                            </thead>
+                            <tbody id="tbodymain">
+
+                            </tbody>
+                        </table>
                     </div>
-                    <p>竞赛作业，需要在中午12点前提交</p>
-                </main>
+                </div>
+
+
             </main>
+
         </div>
 
         <!-- ============================================================== -->

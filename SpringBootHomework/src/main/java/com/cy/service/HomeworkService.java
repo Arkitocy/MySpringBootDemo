@@ -1,6 +1,7 @@
 package com.cy.service;
 
 import com.cy.entity.Homework;
+import com.cy.entity.HomeworkRankDTO;
 import com.cy.entity.HomeworkUserDTO;
 import com.cy.repository.DTODao;
 import com.cy.repository.HomeworkRepository;
@@ -55,11 +56,11 @@ public class HomeworkService {
             String username = (String) listmap.get(i).get("username");
             String hid = (String) listmap.get(i).get("hid");
             try {
-                if (listmap.get(i).get("complete_time")!=null){
-                    Date completeTime = new Date(sdf.parse( listmap.get(i).get("complete_time").toString()).getTime());
+                if (listmap.get(i).get("complete_time") != null) {
+                    Date completeTime = new Date(sdf.parse(listmap.get(i).get("complete_time").toString()).getTime());
                     hud.setCompleteTime(completeTime);
-                }else {
-                    Date completeTime=null;
+                } else {
+                    Date completeTime = null;
                     hud.setCompleteTime(completeTime);
                 }
 
@@ -78,5 +79,22 @@ public class HomeworkService {
 
         }
         return ah;
+    }
+
+
+    public ArrayList<HomeworkRankDTO> getRank(String type1) {
+        ArrayList<HomeworkRankDTO> hr = new ArrayList<>();
+        List<Map<String, Object>> listmap = dd.queryRankDTOListMap(type1);
+        for (int i = 0; i < listmap.size(); i++) {
+            HomeworkRankDTO hrd = new HomeworkRankDTO();
+            String username = (String)listmap.get(i).get("username");
+            String ac = listmap.get(i).get("ac").toString();
+            String type = (String)listmap.get(i).get("type");
+            hrd.setUsername(username);
+            hrd.setAc(ac);
+            hrd.setType(type);
+            hr.add(hrd);
+        }
+        return hr;
     }
 }
