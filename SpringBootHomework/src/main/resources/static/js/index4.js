@@ -102,7 +102,7 @@ $(document).ready(function () {
             $("button[name='changebtn']").click(function () {
                 var id = this.id
                 var fmt = SimpleDateFormat("yyyy-MM-dd");
-                $.getJSON("homework/findAllById/"+id, {id: id}, function (js) {
+                $.getJSON("homework/findAllById/" + id, {id: id}, function (js) {
                     $("#changebtn").empty();
                     $("#id").attr("value", js[0].id);
                     $("#hwtitle").attr("value", js[0].title);
@@ -145,9 +145,9 @@ $(document).ready(function () {
             })
 
             $("button[name='deletebtn']").click(function () {
-                var id= this.id;
+                var id = this.id;
                 console.log(id);
-                $.getJSON("homework/deleteById/"+id, {id: id}, function (rs) {
+                $.getJSON("homework/deleteById/" + id, {id: id}, function (rs) {
                     if (rs.rs == 'success') {
                         window.location.href = "index4.html";
                     } else {
@@ -187,26 +187,32 @@ $(document).ready(function () {
                 var uid = loginid;
                 $('#uploadmodal').modal("show");
                 $("button[name='uploadbtn2']").click(function () {
-                    var file=$("#myFile")[0].files[0];
-                    // formData.append("file",file);
-                    // formData.append("uid",uid);
-                    // formData.append("hid",hid);
                     var formData = new FormData(document.getElementById("upload-form"));
                     $.ajax({
-                        url:'homework/upload',
-                        dataType:'json',
-                        type:'POST',
-                        async: false,
+                        url: "homework/upload",
+                        method: 'POST',
                         data: formData,
-                        processData : false, // 使数据不做处理
-                        contentType : false, // 不要设置Content-Type请求头
+                        contentType: false,
+                        processData: false,
                         success: function (resp) {
-                            if(resp.result==1){
-                                $('#uploadmodal').modal('hide');
+                            if(resp.result!=null){
+                                $.getJSON("homework/saveDetails/"+uid+"/"+hid+"/"+resp.result , function (json) {
+                                    if ("outtime"==json.rs){
+                                        alert("已超时");
+                                    }else if("fail"==json.rs){
+                                        alert("失败");
+                                    }else{
+                                        alert("添加成功");
+                                        $('#modalhwdetail2').modal('hide');
+                                    }
+                                })
+
                             }else{
+                                alert("上传失败");
                             }
                         }
                     });
+
                 })
             })
         })

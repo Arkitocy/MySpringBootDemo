@@ -24,23 +24,38 @@ public class DTODao {
     }
 
 
-    public int queryuploadDTOListMap(String  uid, String hid, Date date) {
-        String sql = "insert into user_homework values(?,?,?,?)";
-        Object[] args = {hid,uid,date,"完成"};
-        int[] argTypes = {Types.VARCHAR,Types.VARCHAR,Types.DATE,Types.VARCHAR};
+    public int queryuploadDTOListMap(String uid, String hid, String homeworkid,Date date) {
+        String sql = "insert into user_homework(h_id,u_id,complete_time,homeworkid,status) values(?,?,?,?,?)";
+        Object[] args = {hid, uid, date, homeworkid,"完成"};
+        int[] argTypes = {Types.VARCHAR, Types.VARCHAR, Types.DATE, Types.VARCHAR};
 
-        return this.jdbcTemplate.update(sql,args);
+        return this.jdbcTemplate.update(sql, args);
+    }
+
+    public int queryuploadDTOListMap2(String uid, String hid,String homeworkid, Date date) {
+        String sql = "update user_homework set complete_time =? , homeworkid=? where u_id=? AND h_id=?";
+        Object[] args = {date,homeworkid, uid,hid};
+        int[] argTypes = {Types.VARCHAR, Types.VARCHAR, Types.DATE, Types.VARCHAR};
+
+        return this.jdbcTemplate.update(sql, args);
     }
 
     public List<Map<String, Object>> queryRankDTOListMap(String type) {
-        if("全部".equals(type)){
-            String sql="SELECT `user`.`username`,COUNT(user_homework.`status`) ac, `user`.type FROM `user` LEFT JOIN user_homework ON `user`.id=user_homework.u_id GROUP BY `user`.id HAVING `user`.type='student' ORDER BY COUNT(user_homework.`status`) DESC";
+        if ("全部".equals(type)) {
+            String sql = "SELECT `user`.`username`,COUNT(user_homework.`status`) ac, `user`.type FROM `user` LEFT JOIN user_homework ON `user`.id=user_homework.u_id GROUP BY `user`.id HAVING `user`.type='student' ORDER BY COUNT(user_homework.`status`) DESC";
             return this.jdbcTemplate.queryForList(sql);
-        }else {
-            String sql2 ="SELECT `user`.`username`,count(t.h_id) ac ,`user`.type FROM `user` LEFT JOIN (SELECT `user`.id,`user`.`username`,user_homework.h_id FROM `user` LEFT JOIN user_homework on `user`.id = user_homework.u_id LEFT JOIN homework on user_homework.h_id=homework.id where homework.type=?) t on t.id = `user`.id GROUP BY `user`.id HAVING `user`.type='student' ORDER BY COUNT(t.h_id) desc;";
+        } else {
+            String sql2 = "SELECT `user`.`username`,count(t.h_id) ac ,`user`.type FROM `user` LEFT JOIN (SELECT `user`.id,`user`.`username`,user_homework.h_id FROM `user` LEFT JOIN user_homework on `user`.id = user_homework.u_id LEFT JOIN homework on user_homework.h_id=homework.id where homework.type=?) t on t.id = `user`.id GROUP BY `user`.id HAVING `user`.type='student' ORDER BY COUNT(t.h_id) desc;";
             Object[] args = {type};
             int[] argTypes = {Types.VARCHAR};
             return this.jdbcTemplate.queryForList(sql2, args, argTypes);
         }
+    }
+
+    public List<Map<String, Object>> queryfindexist(String uid, String hid) {
+        String sql = ("select * from user_homework where h_id=? AND u_id=?");
+        Object[] args = {hid, uid};
+        int[] argTypes = {Types.VARCHAR, Types.VARCHAR};
+        return this.jdbcTemplate.queryForList(sql, args,argTypes);
     }
 }

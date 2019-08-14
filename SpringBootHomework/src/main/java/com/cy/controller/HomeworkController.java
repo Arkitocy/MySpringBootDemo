@@ -83,12 +83,12 @@ public class HomeworkController {
 
     @RequestMapping("deleteById/{id}")
     public Map deleteById(@PathVariable("id") String id) {
-        Map map=new HashMap();
+        Map map = new HashMap();
         hs.deleteById(id);
         if (hs.findAllById(id).size() == 0) {
-            map.put("rs","success");
-        }else {
-            map.put("rs","fail");
+            map.put("rs", "success");
+        } else {
+            map.put("rs", "fail");
         }
         return map;
     }
@@ -99,14 +99,47 @@ public class HomeworkController {
     }
 
 
-    @RequestMapping("upload")
-    public Map  upload()  {
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        Map map=new HashMap();
+    @RequestMapping(value = "/upload", method = RequestMethod.POST)
+    @ResponseBody
+    public Map upload(@RequestParam MultipartFile myFile, HttpSession session) throws IOException {
+        String originalFilename = myFile.getOriginalFilename();
+        int pos = originalFilename.lastIndexOf(".");
+        String suffix = originalFilename.substring(pos);
+        String realPath = "D:/tmp";
+        String uuid = UUID.randomUUID().toString();
+        String fullPath = realPath + File.separator + uuid + suffix;
+        String homeworkid=File.separator + uuid + suffix;
+        InputStream in = null;
+        try {
+            in = myFile.getInputStream();
+            OutputStream out = new FileOutputStream(new File(fullPath));
+            int len = 0;
+            byte[] buf = new byte[3 * 1024];
+            while ((len = in.read(buf)) != -1) {
+                out.write(buf, 0, len);
+            }
+            out.close();
+            in.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        Map map= new HashMap();
+        map.put("result",homeworkid);
+        return map;
+    }
 
-//        dd.queryuploadDTOListMap(hid,uid,new java.util.Date());
 
-        map.put("rs","success");
+    @RequestMapping("saveDetails/{uid}/{hid}/{result}")
+    public Map saveDetails(@PathVariable("uid") String uid, @PathVariable("hid") String hid,@PathVariable("result") String homeworkid) {
+        Map map = new HashMap();
+        int rs = hs.savedetails(uid, hid,homeworkid);
+        if (rs > 0) {
+            map.put("rs", "success");
+        } else if (rs == -1) {
+            map.put("rs", "outtime");
+        } else {
+            map.put("rs", "fail");
+        }
         return map;
     }
 

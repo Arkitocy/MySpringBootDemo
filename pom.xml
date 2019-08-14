@@ -12,6 +12,7 @@
         <module>TestSpringBoot</module>
         <module>SpringBootJPA</module>
         <module>SpringBootHomework</module>
+        <module>SpringBootThymeleaf</module>
     </modules>
 
     <parent>

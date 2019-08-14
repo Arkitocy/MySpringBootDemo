@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>demo1</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+
+</head>
+<body>
+<span th:text="${username}"></span>
+<span th:text="${user.name}"></span>
+
+<table border="1">
+    <tr>
+        <th>no</th>
+        <th>account</th>
+        <th>name</th>
+        <th>password</th>
+        <th>accountType</th>
+        <th>tel</th>
+    </tr>
+    <tr th:each="list,stat : ${accountList}">
+        <td th:text="${stat.count}"></td>
+        <td th:text="${list.account}"></td>
+        <td th:text="${list.name}"></td>
+        <td th:text="${list.password}"></td>
+        <td th:text="${list.accountType}"></td>
+        <td th:text="${list.tel}"></td>
+    </tr>
+</table>
+
+<div th:object="${user}">
+    <span th:text="*{account}">...</span>
+    <span th:text="*{accountType}">...</span>
+</div>
+
+
+<form th:action="@{/thymeleaf/saveProduct}" th:object="${user}" method="POST">
+    <label for="name">名称:</label>
+    <input type="text" th:field="*{name}" value="" /><br/>
+
+    <label for="firstName">账号类型:</label>
+    <input type="text" th:field="*{accountType}" value="2018-03-28" /> <br/>
+
+    <label for="price">电话:</label>
+    <input type="text" th:field="*{tel}" size="10" value="198" /><br/>
+
+    <input type="submit" value="提交"/>
+</form>
+</body>
+</html>
