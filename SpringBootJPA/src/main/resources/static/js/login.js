@@ -43,7 +43,6 @@ $(function () {
                 url: "login",
                 success: function (res) {
                     var username = res;
-
                     console.log(username);
                     if (res != "" ) {
                         alert("登陆成功");

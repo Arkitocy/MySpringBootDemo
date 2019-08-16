@@ -86,10 +86,16 @@
                     <!-- User profile and search -->
                     <!-- ============================================================== -->
                     <ul class="navbar-nav my-lg-0">
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle text-muted waves-effect waves-dark" href="" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="username"></a>
-                            <a href="login.html" class="btn btn-danger">登出</a>
-                        </li>
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown"><img src="" class="img-circle" width="40"
+                                                                                            id="headimg"/> <span id="username"></span> <i class="icon-submenu lnr lnr-chevron-down"></i></a>
+                            <ul class="dropdown-menu">
+                                <li><a href="#"><i class="lnr lnr-user"></i> <span>My Profile</span></a>
+                                <li><a href="#"><i class="lnr lnr-envelope"></i> <span>Message</span></a>
+                                <li><a href="profile.html"><i class="lnr lnr-cog"></i> <span>修改个人资料</span></a>
+                                <li><a href="login.html"><i class="lnr lnr-exit"></i> <span>注销</span></a>
+                            </ul>
+                        </li>>
                     </ul>
                 </div>
             </nav>

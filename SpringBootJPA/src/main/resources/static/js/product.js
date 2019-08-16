@@ -1,9 +1,23 @@
 $(document).ready(function () {
+    var loginname;
+    var loginid;
+    var headname;
     $.post("product/showId",function (data) {
-        var loginname=data.username;
+         loginname=data.username;
+        if (loginname == null) {
+            window.location.href = "login.html";
+        }
         $("#username").text(loginname);
+        $.getJSON("findUserID/" + loginname, function (data) {
+            loginid = data.id;
+            headname = data.head;
+            $("#headimg").attr("src","http://localhost:8080/SpringBootJPA/image/"+headname);
+        })
     },"json");
 
+    // $("#username").click(function () {
+    //     window.location.href="profile.html";
+    // })
     $.getJSON("product/showall", function (json) {
             console.log(json);
             $("#tbodymainbtn").empty();
