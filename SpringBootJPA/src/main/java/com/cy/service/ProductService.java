@@ -5,6 +5,7 @@ import com.cy.repository.ProductRepository;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import org.springframework.data.domain.Pageable;
 import java.util.List;
 import java.util.Optional;
 
@@ -14,8 +15,8 @@ public class ProductService {
     @Resource
     ProductRepository pr;
 
-    public Iterable<Product> findall() {
-        return pr.findAll();
+    public Iterable<Product> findall(Pageable pageable) {
+        return pr.findAll(pageable);
     }
 
     public List<Product> findByName(String name) {

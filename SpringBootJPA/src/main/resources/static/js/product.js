@@ -2,8 +2,9 @@ $(document).ready(function () {
     var loginname;
     var loginid;
     var headname;
-    $.post("product/showId",function (data) {
-         loginname=data.username;
+    var page = 0;
+    $.post("product/showId", function (data) {
+        loginname = data.username;
         if (loginname == null) {
             window.location.href = "login.html";
         }
@@ -11,94 +12,11 @@ $(document).ready(function () {
         $.getJSON("findUserID/" + loginname, function (data) {
             loginid = data.id;
             headname = data.head;
-            $("#headimg").attr("src","http://localhost:8080/SpringBootJPA/image/"+headname);
+            $("#headimg").attr("src", "http://localhost:8080/SpringBootJPA/image/" + headname);
         })
-    },"json");
-
-    // $("#username").click(function () {
-    //     window.location.href="profile.html";
-    // })
-    $.getJSON("product/showall", function (json) {
-            console.log(json);
-            $("#tbodymainbtn").empty();
-            for (var i = 0; i < json.length; i++) {
-                $("#tbodymainbtn").append(
-                    "<tr id='tridval" + i + "'>"
-                    + "<td>" + json[i].id
-                    + "</td>"
-                    + "<td>" + json[i].name
-                    + "</td>"
-                    + "<td>" + json[i].category
-                    + "</td>"
-                    + "<td>" + json[i].productiondate
-                    + "</td>"
-                    + "<td>" + json[i].outdate
-                    + "</td>"
-                    + "<td>" + json[i].price
-                    + "</td>"
-                    + "<td>" + json[i].amount
-                    + "</td>"
-                    + "</td></tr>"
-                );
-            }
-        }
-    )
-
-    function SimpleDateFormat(pattern){
-        var fmt = new Object();
-        fmt.pattern = pattern;
-
-        fmt.parse = function(source){
-            try{
-                return new Date(source);
-            }catch(e){
-                console.log("字符串 "+source+" 转时间格式失败！");
-                return null;
-            }
-        };
-
-        fmt.format = function(date){
-            if(typeof(date) == "undefined" || date == null || date==""){
-                return "";
-            }
-
-            try{
-                date = new Date(date);
-            }catch(e){
-                console.log("时间 "+date+" 格式化失败！");
-                return "";
-            }
-
-            var strTime = this.pattern;//时间表达式的正则
-
-            var o = {
-                "M+": date.getMonth() + 1, //月份
-                "d+": date.getDate(), //日
-                "H+": date.getHours(), //小时
-                "m+": date.getMinutes(), //分
-                "s+": date.getSeconds(), //秒
-                "q+": Math.floor((date.getMonth() + 3) / 3), //季度
-                "S": date.getMilliseconds() //毫秒
-            };
-
-            if (/(y+)/.test(strTime)){
-                strTime = strTime
-                    .replace(RegExp.$1, (date.getFullYear() + "")
-                        .substr(4 - RegExp.$1.length));
-            }
-            for (var k in o){
-                if (new RegExp("(" + k + ")").test(strTime)){
-                    strTime = strTime.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
-                }
-            }
-
-            return strTime;
-        };
-        return fmt;
-    }
-
+    }, "json");
     $("button[name='searchbtn']").click(function () {
-        $.getJSON("product/showByName",$("input[name='productname']").val(),function (json) {
+        $.getJSON("product/showByName", $("input[name='productname']").val(), function (json) {
             console.log(json);
             $("#tbodymainbtn").empty();
             for (var i = 0; i < json.length; i++) {
@@ -123,4 +41,61 @@ $(document).ready(function () {
             }
         })
     })
+    getdata(page);
+
+    function getdata(pagen) {
+        $.getJSON("product/showall/" + pagen, function (json) {
+            console.log("===" + pagen);
+            if (pagen < json.pageable.pageSize) {
+                $("#tbodymainbtn").empty();
+                for (var i = 0; i < json.content.length; i++) {
+                    $("#tbodymainbtn").append(
+                        "<tr id='tridval" + i + "'>"
+                        + "<td>" + json.content[i].id
+                        + "</td>"
+                        + "<td>" + json.content[i].name
+                        + "</td>"
+                        + "<td>" + json.content[i].category
+                        + "</td>"
+                        + "<td>" + json.content[i].productiondate
+                        + "</td>"
+                        + "<td>" + json.content[i].outdate
+                        + "</td>"
+                        + "<td>" + json.content[i].price
+                        + "</td>"
+                        + "<td>" + json.content[i].amount
+                        + "</td>"
+                        + "</td></tr>"
+                    );
+                }
+            }
+            var pagenum = json.totalPages;
+            $(".pagination").empty();
+            $(".pagination").append('<li class="page-item"><a class="page-link" href="#" id="previosepage">Previous</a></li>');
+            for (var j = 0; j < pagenum; j++) {
+                $(".pagination").append(' <li class="page-item" id="page' + j + '"><a class="page-link" href="#">' + (j + 1) + '</a></li>');
+            }
+            $(".pagination").append(' <li class="page-item"><a class="page-link" href="#" id="nextpage">Next</a></li>');
+            $(".page-item").removeClass("active");
+            $("#page" + pagen).addClass("active");
+            $("#nextpage").click(function () {
+                var pagenum1 = Number(pagen) + Number(1);
+                console.log("---" + pagenum1);
+                if(pagen<pagenum){
+                    getdata(pagenum1);
+                }
+            })
+            $("#previosepage").click(function () {
+                var pagenum2 = Number(pagen) - Number(1);
+                console.log("---" + pagenum2);
+                if(pagen>0){
+                    getdata(pagenum2);
+                }
+            })
+            $(".page-item").click(function () {
+                page = this.id.substr(4);
+                getdata(page);
+            })
+        })
+    }
 });

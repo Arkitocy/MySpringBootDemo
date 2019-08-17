@@ -4,6 +4,10 @@ import com.cy.entity.Product;
 import com.cy.entity.User;
 import com.cy.service.ProductService;
 import com.cy.utils.KeyUtils;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -22,9 +26,10 @@ public class ProductController {
     @Resource
     ProductService ps;
 
-    @RequestMapping("showall")
-    public Iterable<Product> findall() {
-        Iterable<Product> ip = ps.findall();
+    @RequestMapping("showall/{page}")
+    public Iterable<Product> findall(@PathVariable("page") String page) {
+        Pageable pageable = new PageRequest(Integer.parseInt(page),3);
+        Iterable<Product> ip = ps.findall(pageable);
         return ip;
     }
 
@@ -81,4 +86,6 @@ public class ProductController {
         session.setAttribute("username",name);
         return map;
     }
+
+
 }
