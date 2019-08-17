@@ -45,8 +45,7 @@ $(document).ready(function () {
 
     function getdata(pagen) {
         $.getJSON("product/showall/" + pagen, function (json) {
-            console.log("===" + pagen);
-            if (pagen < json.pageable.pageSize) {
+            if (pagen < json.totalPages) {
                 $("#tbodymainbtn").empty();
                 for (var i = 0; i < json.content.length; i++) {
                     $("#tbodymainbtn").append(
@@ -71,24 +70,22 @@ $(document).ready(function () {
             }
             var pagenum = json.totalPages;
             $(".pagination").empty();
-            $(".pagination").append('<li class="page-item"><a class="page-link" href="#" id="previosepage">Previous</a></li>');
+            $(".pagination").append('<li class=""><a class="page-link" href="#" id="previosepage">Previous</a></li>');
             for (var j = 0; j < pagenum; j++) {
                 $(".pagination").append(' <li class="page-item" id="page' + j + '"><a class="page-link" href="#">' + (j + 1) + '</a></li>');
             }
-            $(".pagination").append(' <li class="page-item"><a class="page-link" href="#" id="nextpage">Next</a></li>');
+            $(".pagination").append(' <li class=""><a class="page-link" href="#" id="nextpage">Next</a></li>');
             $(".page-item").removeClass("active");
             $("#page" + pagen).addClass("active");
             $("#nextpage").click(function () {
                 var pagenum1 = Number(pagen) + Number(1);
-                console.log("---" + pagenum1);
-                if(pagen<pagenum){
+                if (pagen < pagenum - 1) {
                     getdata(pagenum1);
                 }
             })
             $("#previosepage").click(function () {
                 var pagenum2 = Number(pagen) - Number(1);
-                console.log("---" + pagenum2);
-                if(pagen>0){
+                if (pagen > 0) {
                     getdata(pagenum2);
                 }
             })
