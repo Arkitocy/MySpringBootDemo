@@ -33,8 +33,7 @@ $(function () {
 
         var adata = {
             "username": $("#name").val(),
-            "password": $("#pwd").val(),
-            "type": $("#type").val()
+            "password": $("#pwd").val()
         }
         var data = JSON.stringify(adata);
         $.ajax({

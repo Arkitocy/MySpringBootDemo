@@ -23,8 +23,8 @@ public class UserService {
         return ur.findByUsername(name);
     }
 
-    public User findByNameAndPassword(String name,String password,String type){
-        return ur.findByUsernameAndPasswordAndType(name,password,type);
+    public User findByNameAndPassword(String name,String password){
+        return ur.findByUsernameAndPassword(name,password);
     }
 
 

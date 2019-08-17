@@ -52,8 +52,7 @@ public class UserController {
     public User login(@RequestBody User user) {
         String loginName = user.getUsername();
         String password = user.getPassword();
-        String type = user.getType();
-        User user1 = us.findByNameAndPassword(loginName, password,type);
+        User user1 = us.findByNameAndPassword(loginName, password);
         if (user1 != null) {
             return user1;
         } else {
