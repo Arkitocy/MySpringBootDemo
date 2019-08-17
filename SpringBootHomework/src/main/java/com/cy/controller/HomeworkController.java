@@ -9,6 +9,8 @@ import com.cy.utils.KeyUtils;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -61,6 +63,21 @@ public class HomeworkController {
         }
         Date d2 = new Date(d1.getTime());
         return hs.findByTypeAndFinishTime(type, d2);
+    }
+
+    @RequestMapping("showByTypeAndFinishTime/{page}")
+    public Iterable<Homework> showByTypeAndFinishTime(@PathVariable("page") String page,HttpServletRequest request) {
+        Pageable pageable = new PageRequest(Integer.parseInt(page),10);
+        String type = request.getParameter("type");
+        java.util.Date d1 = null;
+        try {
+            d1 = sdf.parse(request.getParameter("finishTime"));
+
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        Date d2 = new Date(d1.getTime());
+        return hs.findByTypeAndFinishTime(type, d2,pageable);
     }
 
     @RequestMapping("save")

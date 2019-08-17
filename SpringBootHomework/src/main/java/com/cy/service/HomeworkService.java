@@ -5,6 +5,7 @@ import com.cy.entity.HomeworkRankDTO;
 import com.cy.entity.HomeworkUserDTO;
 import com.cy.repository.DTODao;
 import com.cy.repository.HomeworkRepository;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -27,6 +28,9 @@ public class HomeworkService {
 
     public List<Homework> findByTypeAndFinishTime(String type, Date date) {
         return hr.findByTypeAndFinishTime(type, date);
+    }
+    public Iterable<Homework> findByTypeAndFinishTime(String type, Date date, Pageable pageable){
+        return hr.findByTypeAndFinishTime(type,date,pageable);
     }
 
     public Homework save(Homework homework) {
