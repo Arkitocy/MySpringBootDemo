@@ -45,7 +45,7 @@ $(document).ready(function () {
 
     function getdata(pagen) {
         $.getJSON("product/showall/" + pagen, function (json) {
-            if (pagen < json.totalPages) {
+            if (pagen <=json.totalPages) {
                 $("#tbodymainbtn").empty();
                 for (var i = 0; i < json.content.length; i++) {
                     $("#tbodymainbtn").append(
@@ -70,14 +70,13 @@ $(document).ready(function () {
             }
             var pagenum = json.totalPages;
             $(".pagination").empty();
-            $(".pagination").append('<li class=""><a class="page-link" href="#" id="firstpage">首页</a></li>');
-            $(".pagination").append('<li class=""><a class="page-link" href="#" id="previosepage">Previous</a></li>');
+            $(".pagination").append('<li class="" ><a class="page-link" href="#" id="firstpage">首页</a></li>');
+            $(".pagination").append('<li class="" ><a class="page-link" href="#" id="previosepage">上一页</a></li>');
             for (var j = 0; j < pagenum; j++) {
-                $(".pagination").append(' <li class="page-item" id="page' + j + '"><a class="page-link" href="#">' + (j + 1) + '</a></li>');
+                $(".pagination").append('<li class="page-item" id="page' + j + '"><a class="page-link" href="#">' + (j + 1) + '</a></li>');
             }
-            $(".pagination").append(' <li class=""><a class="page-link" href="#" id="nextpage">Next</a></li>');
-            $(".pagination").append('<li class=""><a class="page-link" href="#" id="lastpage">尾页</a></li>');
-
+            $(".pagination").append('<li class="" ><a class="page-link" href="#" id="nextpage">下一页</a></li>');
+            $(".pagination").append('<li class="" ><a class="page-link" href="#" id="lastpage">尾页</a></li>');
             $(".page-item").removeClass("active");
             $("#page" + pagen).addClass("active");
             $("#nextpage").click(function () {
@@ -85,25 +84,27 @@ $(document).ready(function () {
                 if (pagen < pagenum - 1) {
                     getdata(pagenum1);
                 }
-            })
+            });
             $("#previosepage").click(function () {
                 var pagenum2 = Number(pagen) - Number(1);
                 if (pagen > 0) {
                     getdata(pagenum2);
                 }
-            })
-
-            $("#firstpage").click(function () {
-                getdata(0);
-            })
+            });
             $("#lastpage").click(function () {
-                getdata(pagenum);
-            })
+                console.log(1);
+                getdata(pagenum-1);
+            });
+            $("#firstpage").click(function () {
+                console.log(1);
+                getdata(0);
+            });
+
 
             $(".page-item").click(function () {
                 page = this.id.substr(4);
                 getdata(page);
-            })
+            });
         })
     }
 });
