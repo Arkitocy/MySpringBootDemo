@@ -202,7 +202,7 @@ $(document).ready(function () {
                                     }else if("fail"==json.rs){
                                         alert("失败");
                                     }else{
-                                        alert("添加成功");
+                                        alert(" 添加成功");
                                         $('#modalhwdetail2').modal('hide');
                                     }
                                 })

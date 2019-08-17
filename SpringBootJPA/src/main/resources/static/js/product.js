@@ -70,11 +70,14 @@ $(document).ready(function () {
             }
             var pagenum = json.totalPages;
             $(".pagination").empty();
+            $(".pagination").append('<li class=""><a class="page-link" href="#" id="firstpage">首页</a></li>');
             $(".pagination").append('<li class=""><a class="page-link" href="#" id="previosepage">Previous</a></li>');
             for (var j = 0; j < pagenum; j++) {
                 $(".pagination").append(' <li class="page-item" id="page' + j + '"><a class="page-link" href="#">' + (j + 1) + '</a></li>');
             }
             $(".pagination").append(' <li class=""><a class="page-link" href="#" id="nextpage">Next</a></li>');
+            $(".pagination").append('<li class=""><a class="page-link" href="#" id="lastpage">尾页</a></li>');
+
             $(".page-item").removeClass("active");
             $("#page" + pagen).addClass("active");
             $("#nextpage").click(function () {
@@ -89,6 +92,14 @@ $(document).ready(function () {
                     getdata(pagenum2);
                 }
             })
+
+            $("#firstpage").click(function () {
+                getdata(0);
+            })
+            $("#lastpage").click(function () {
+                getdata(pagenum);
+            })
+
             $(".page-item").click(function () {
                 page = this.id.substr(4);
                 getdata(page);
