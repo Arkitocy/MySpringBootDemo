@@ -60,13 +60,14 @@ public class HomeworkService {
             String id = (String) listmap.get(i).get("id");
             String username = (String) listmap.get(i).get("username");
             String hid = (String) listmap.get(i).get("hid");
+            String homeworkid = (String) listmap.get(i).get("homeworkid");
             try {
                 if (listmap.get(i).get("complete_time") != null) {
                     Date completeTime = new Date(sdf.parse(listmap.get(i).get("complete_time").toString()).getTime());
-                    hud.setCompleteTime(completeTime);
+                    hud.setCompleteTime(sdf.format(completeTime));
                 } else {
-                    Date completeTime = null;
-                    hud.setCompleteTime(completeTime);
+
+                    hud.setCompleteTime("");
                 }
 
             } catch (ParseException e) {
@@ -75,13 +76,13 @@ public class HomeworkService {
             hud.setId(id);
             hud.setUsername(username);
             hud.setHid(hid);
-            if (hud.getCompleteTime() == null) {
+            hud.setHomeworkid(homeworkid);
+            if (hud.getCompleteTime() == "") {
                 hud.setStatus("未完成");
             } else {
                 hud.setStatus("完成");
             }
             ah.add(hud);
-
         }
         return ah;
     }
@@ -109,7 +110,9 @@ public class HomeworkService {
         if (new Date(System.currentTimeMillis()).getTime() > list.get(0).getFinishTime().getTime()) {
             rs = -1;
         } else {
-            if (dd.queryfindexist(uid, hid).size() > 0) {
+//            dd.queryuploadDTOListMap(uid, hid, homeworkid,new Timestamp(new java.util.Date().getTime()));
+//            rs = 1;
+            if (dd.queryfindexit(uid,hid).size() > 0) {
                 dd.queryuploadDTOListMap2(uid, hid, homeworkid,new Timestamp(new java.util.Date().getTime()));
                 rs = 1;
             } else {
@@ -119,4 +122,6 @@ public class HomeworkService {
         }
         return rs;
     }
+
+
 }

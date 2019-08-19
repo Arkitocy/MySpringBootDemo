@@ -16,7 +16,7 @@ public class DTODao {
     private JdbcTemplate jdbcTemplate;
 
     public List<Map<String, Object>> queryHomeworkUserDTOListMap(Homework homework) {
-        String sql = "SELECT u.id,u.username,uh.h_id,uh.complete_time from `user` u LEFT JOIN user_homework uh on (u.id=uh.u_id  and uh.h_id= ? )where  u.type='student'";
+        String sql = "SELECT u.id,u.username,uh.h_id,uh.complete_time,uh.homeworkid from `user` u LEFT JOIN user_homework uh on (u.id=uh.u_id  and uh.h_id= ? )where  u.type='student'";
         Object[] args = {homework.getId()};
         int[] argTypes = {Types.VARCHAR};
 
@@ -52,10 +52,19 @@ public class DTODao {
         }
     }
 
-    public List<Map<String, Object>> queryfindexist(String uid, String hid) {
-        String sql = ("select * from user_homework where h_id=? AND u_id=?");
-        Object[] args = {hid, uid};
-        int[] argTypes = {Types.VARCHAR, Types.VARCHAR};
+    public List<Map<String, Object>> queryfindhomework(String homeworkid) {
+        String sql = ("select * from user_homework where homeworkid=? ");
+        Object[] args = {homeworkid};
+        int[] argTypes = {Types.VARCHAR};
         return this.jdbcTemplate.queryForList(sql, args,argTypes);
     }
+
+    public List<Map<String, Object>> queryfindexit(String uid,String hid) {
+        String sql = ("select * from user_homework where u_id=? AND h_id=? ");
+        Object[] args = {uid,hid};
+        int[] argTypes = {Types.VARCHAR,Types.VARCHAR};
+        return this.jdbcTemplate.queryForList(sql, args,argTypes);
+    }
+
+
 }

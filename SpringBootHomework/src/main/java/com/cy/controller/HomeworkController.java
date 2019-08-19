@@ -9,6 +9,8 @@ import com.cy.utils.KeyUtils;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
+import org.apache.tomcat.util.http.fileupload.IOUtils;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
@@ -16,6 +18,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.*;
 import java.sql.Array;
@@ -33,6 +36,9 @@ public class HomeworkController {
 
     @Resource
     DTODao dd;
+
+    @Value("${fileUpLoadPath}")
+    String filePath;
 
     SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 
@@ -66,8 +72,8 @@ public class HomeworkController {
     }
 
     @RequestMapping("showByTypeAndFinishTime/{page}")
-    public Iterable<Homework> showByTypeAndFinishTime(@PathVariable("page") String page,HttpServletRequest request) {
-        Pageable pageable = new PageRequest(Integer.parseInt(page),10);
+    public Iterable<Homework> showByTypeAndFinishTime(@PathVariable("page") String page, HttpServletRequest request) {
+        Pageable pageable = new PageRequest(Integer.parseInt(page), 10);
         String type = request.getParameter("type");
         java.util.Date d1 = null;
         try {
@@ -77,7 +83,7 @@ public class HomeworkController {
             e.printStackTrace();
         }
         Date d2 = new Date(d1.getTime());
-        return hs.findByTypeAndFinishTime(type, d2,pageable);
+        return hs.findByTypeAndFinishTime(type, d2, pageable);
     }
 
     @RequestMapping("save")
@@ -122,10 +128,10 @@ public class HomeworkController {
         String originalFilename = myFile.getOriginalFilename();
         int pos = originalFilename.lastIndexOf(".");
         String suffix = originalFilename.substring(pos);
-        String realPath = "D:/tmp";
+
         String uuid = UUID.randomUUID().toString();
-        String fullPath = realPath + File.separator + uuid + suffix;
-        String homeworkid=File.separator + uuid + suffix;
+        String fullPath = filePath + File.separator + uuid + suffix;
+        String homeworkid = File.separator + uuid + suffix;
         InputStream in = null;
         try {
             in = myFile.getInputStream();
@@ -140,16 +146,38 @@ public class HomeworkController {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        Map map= new HashMap();
-        map.put("result",homeworkid);
+        Map map = new HashMap();
+        map.put("result", homeworkid);
         return map;
     }
 
 
+
+    @RequestMapping(value = "/download/{homeworkid}", method = RequestMethod.GET)
+    public void downLoad(@PathVariable("homeworkid") String homeworkid, HttpServletResponse response) {
+        List<Map<String, Object>> list = dd.queryfindhomework(homeworkid);
+        for (int i=0;i<list.size();i++){
+            String fileName = (String)list.get(i).get("homeworkid");
+            String fullPath = filePath + File.separator + fileName;
+            response.setContentType("application/force-download");
+            response.setHeader("Content-Disposition", "attachment;fileName=" + fileName);// 设置文件名;
+            //response.setHeader("Content-Disposition", "attachment;filename="+new String(fileName.getBytes("GBK"),"ISO-8859-1"));
+            try {
+                File downloadFile = new File(fullPath);
+                FileInputStream inputStream = new FileInputStream(downloadFile);
+                IOUtils.copy(inputStream, response.getOutputStream());
+                response.flushBuffer();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+
     @RequestMapping("saveDetails/{uid}/{hid}/{result}")
-    public Map saveDetails(@PathVariable("uid") String uid, @PathVariable("hid") String hid,@PathVariable("result") String homeworkid) {
+    public Map saveDetails(@PathVariable("uid") String uid, @PathVariable("hid") String hid, @PathVariable("result") String homeworkid) {
         Map map = new HashMap();
-        int rs = hs.savedetails(uid, hid,homeworkid);
+        int rs = hs.savedetails(uid, hid, homeworkid);
         if (rs > 0) {
             map.put("rs", "success");
         } else if (rs == -1) {

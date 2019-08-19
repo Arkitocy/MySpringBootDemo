@@ -6,9 +6,9 @@ public class HomeworkUserDTO {
     private String id;
     private String username;
     private String hid;
-
-    private Date completeTime;
+    private String completeTime;
     private String status;
+    private String homeworkid;
 
 
     public String getId() {
@@ -37,11 +37,11 @@ public class HomeworkUserDTO {
 
 
 
-    public Date getCompleteTime() {
+    public String getCompleteTime() {
         return completeTime;
     }
 
-    public void setCompleteTime(Date completeTime) {
+    public void setCompleteTime(String completeTime) {
         this.completeTime = completeTime;
     }
 
@@ -51,5 +51,13 @@ public class HomeworkUserDTO {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public String getHomeworkid() {
+        return homeworkid;
+    }
+
+    public void setHomeworkid(String homeworkid) {
+        this.homeworkid = homeworkid;
     }
 }
